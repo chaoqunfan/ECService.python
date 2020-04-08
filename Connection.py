@@ -1,6 +1,7 @@
 #coding=utf-8
 
 import socket
+import EventBase
 from time import sleep
 # import EventLibs
 
@@ -10,11 +11,11 @@ connEvTypeProbe = 4
 connEvTypeProbeRes = 8
 
 class Connection:
-    def __init__(self, fid, tid, sock):
+    def __init__(self, fid, tid, sock, status):
         self.fid = fid
         self.tid = tid
         self.sock = sock
-        self.status = 0
+        self.status = status
 
     def updateStatus(self, status):
         self.status = status
@@ -22,7 +23,7 @@ class Connection:
     def sendEv(self, ev):
         ev.header.length = sizeof(ev)
         ev.header.checksum = ev.sum()
-        #print 'sending event %d to %d' % (ev.header.code, ev.header.sid)
+        print 'sending event %d to %d' % (ev.header.code, ev.header.sid)
         if self.sock is not None:
             self.sock.send(struct2string(ev))
         else:
@@ -35,8 +36,8 @@ class Connection:
         setattr(ev, "from", self.fid)
         ev.fd = 0
         ev.type = connEvTypeProbe
-        # ev.en_connected_probe = 0
-        # ev.conn_status = 4
+        ev.en_connected_probe = 0
+        ev.conn_status = 4
         ev.header.rid = self.tid
         ev.header.sid = self.fid
         self.sendEv(ev)
@@ -48,16 +49,16 @@ class Connection:
         setattr(ev, "from", self.fid)
         ev.fd = 0
         ev.type = connEvTypeProbeRes
-        # ev.en_connected_probe = 0
-        # ev.conn_status = 2
+        ev.en_connected_probe = 0
+        ev.conn_status = 2
         ev.header.rid = self.tid
         ev.header.sid = self.fid
         self.sendEv(ev)
 
 def newConn(fid, tid, sock):
-    conn = Connection(fid, tid, sock)
-    conn.status = 'inited'
+    conn = Connection(fid, tid, sock, 'inited')
     connList.append(conn)
+    return conn
 
 def removeConn(sock):
     conn = findConn(sock)
