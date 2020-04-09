@@ -93,3 +93,17 @@ def processConnEv(ev, sock):
 def displayConn():
     for c in connList:
         print str(c.fid) + ' ' + str(c.tid)
+
+if __name__ == "__main__":
+    newConn(100, 200, None)
+    conn = findConnById(100, 200)
+    if conn is not None:
+        print ("conn: from %d to %d" %(conn.fid, conn.tid))
+    else:
+        print ("conn: not found")
+
+    conn = findConnById(200, 100)
+    if conn is not None:
+        print ("conn: from %d to %d" %(conn.fid, conn.tid))
+    else:
+        print ("conn: not found")
