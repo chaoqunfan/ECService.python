@@ -14,6 +14,7 @@ def string2struct(string, stype):
 def struct2string(s):
     length = sizeof(s)
     p = cast(pointer(s), POINTER(c_char * length))
+    #print int(p.contents.raw,16)
     return p.contents.raw
 
 class EVENT_HEADER_TYPE(Structure):
@@ -31,7 +32,7 @@ class EventBase(Structure):
         Structure.__init__(self)
         self.header.code = code
 
-    _field_ = ['header', EVENT_HEADER_TYPE]
+    _fields_ = [('header', EVENT_HEADER_TYPE)]
 
     def code(self):
         return self.header.code
@@ -82,3 +83,11 @@ class EV_ECL_DISCONNECTED(EventBase):
         ('from', c_int32),
         ('to', c_int32)
     ]
+
+class EV_SS_START(EventBase):
+    def __init__(self, code=1001):
+        EventBase.__init__(self, code)
+
+class EV_SS_INIT_DONE(EventBase):
+    def __init__(self , code=1003):
+        EventBase.__init__(self, code)
