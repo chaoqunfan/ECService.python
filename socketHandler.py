@@ -4,6 +4,8 @@ import socket
 import select
 import Queue
 import sys
+from Connection import *
+from EventBase import *
 
 from threading import *
 
@@ -23,22 +25,26 @@ class socketHandler(Thread):
         self.thread_stop = False
         super(socketHandler, self).start()
 
-    # update thread stop flag
-    # not stop thread
+    # thread stop
     def stop(self):
         self.thread_stop = True
 
-    # exit socket communication
-    # not thread exit
+    # close socket communication
     def exit(self):
-        pass
+        for s in self.rlists:
+            if s is not self.sock:
+                s.shutdown(socket.SHUT_RDWR)
+            s.close()
+            removeConn(s)
 
-    # get thread isActive
+    # is thread active
     def getStatus(self):
         pass
 
     # thread call back function
     def run(self):
+        code = 0
+        connEv = EV_ECL_CONNECT()
         while True:
             if self.thread_stop:
                 self.exit()
@@ -48,7 +54,7 @@ class socketHandler(Thread):
             if not(rs or ws or es):
                 continue
             for s in rs:
-                # server socket
+                # server socket accept
                 if s is self.sock:
                     ns, addr = self.sock.accept()
                     print 'connect by ', addr
@@ -58,18 +64,35 @@ class socketHandler(Thread):
                     ns.setblocking(False)
 
                     # update connection management
+                    newConn(0, self.svcId, ns)
 
                     # update read socket list
                     self.rlists.append(ns)
 
-                    pass
                 # client socket
                 else:
                     try:
-                        data = self.recv()
+                        data, code = self.recv(s)
                     except:
-                        pass
-                    pass
+                        info = sys.exc_info()
+                        print info[0], ";", info[1]
+                        self.rlists.remove(s)
+                        removeConn(s)
+                        s.shutdown(socket.SHUT_RDWR)
+                        s.close()
+                        continue
+
+                    if data is None:
+                        continue
+
+                    # connect manager, connect probe and probeRes
+                    if code == connEv.code():
+                        ev = string2struct(data, EV_ECL_CONNECT)
+                        processConnEv(ev, s)
+                    # put evnt to queue to handle
+                    else:
+                        self.evtQueue.put(data)
+                        print 'queue size = ' + str(self.evtQueue.qsize())
 
             for s in es:
                 print 'except ', s.getpeername()
@@ -81,19 +104,30 @@ class socketHandler(Thread):
                 s.shutdown(2)
                 # close this client socket
                 s.close()
-
                 # delete connction from connection management
-                pass
+                removeConn(s)
 
 
-    # socket recv send suhtdown
+    # socket recv send shutdown
     def recv(self, sock):
         header = sock.recv(48)
         if header is not None:
-            pass
+            d = string2struct(header, EVENT_HEADER_TYPE)
+            print 'code = ' + str(d.code) + 'length = ' + str(d.length)
+
+            if d.length + d.code + d.sid + d.rid != d.checksum:
+                print 'invalid event header, the checksum check failed'
+                raise Exception("checksum error")
+            else:
+                if d.length > 48:
+                    if d.length > 2048:
+                        sleep(0.5) # to large ?!
+                    payload = sock.recv(d.length-48)
+                    return (''.join([header, payload]), d.code)
+                else:
+                    return (header, d.code)
         else:
             raise Exception("recive error")
-        pass
 
     def send(self):
         pass
@@ -101,7 +135,8 @@ class socketHandler(Thread):
     # create socket client to connect server
     def connectTo(self, toId):
         # get conn from connection management
-        if not None:
+        conn = findConnById(self.svcId, toId)
+        if conn is None:
             print 'connect to service ' + str(toId)
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             try:
@@ -113,18 +148,20 @@ class socketHandler(Thread):
                     print "get service %d's ip error" % toId
                     return None
             except:
-                info = sys.exec_info()
+                info = sys.exc_info()
                 print info[0], ":", info[1]
                 return None
 
             # create new connection mangement
+            conn = newConn(self.svcId, toId, sock)
             sock.setblocking(False)
             self.rlists.append(sock)
             # wait the select call timeout and then can process the new socket
+            # do not understanding
             sleep(2)
-            # connection probe 
-
-        pass
+            # connection probe
+            conn.sendProbe()
+        return conn
 
     # create socket server and listen
     def tcpListen(self, ip=None, port=65534):
