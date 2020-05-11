@@ -24,7 +24,10 @@ class EVENT_HEADER_TYPE(Structure):
         ('sid', c_uint32),
         ('rid', c_uint32),
         ('checksum', c_uint32),
-        ('not_log', c_uint32)
+        ('not_log', c_uint32),
+        ('send_time', c_int64),
+        ('received_time', c_int64),
+        ('complete_time', c_int64)
     ]
 
 class EventBase(Structure):

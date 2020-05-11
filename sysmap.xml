@@ -1,0 +1,165 @@
+<?xml version="1.0"?>
+<config>
+	<!--please ensure all name in default listing which in file sys_topology.c -->
+	<node_info  name="pc" ip="192.168.0.199" >
+			<proc_info  name="scanmgr" >
+					<service_info  name="scanmgr" port="30000"  />
+			</proc_info>
+			<proc_info  name="alarmcenter" >
+					<service_info  name="almcenter" port="33000"  />
+			</proc_info>
+			<proc_info  name="statusmgr" >
+					<service_info  name="statusmgr" port="36000"  />
+			</proc_info>
+            <proc_info  name="statisticMgr" >
+					<service_info  name="statisticMgr" port="39000"  />
+			</proc_info>
+			<proc_info  name="petIntf" >
+					<service_info  name="petscm" port="42000"  />
+			</proc_info>
+			<proc_info  name="compMgr" >
+					<service_info  name="seasoningMgr" port="45000"/>
+					<service_info  name="alignmentMgr" port="45001"/>
+					<service_info  name="axDiagMgr" port="45002"/>
+					<service_info  name="collDiagMgr" port="45003"/>
+			</proc_info>
+			<proc_info  name="platTest" >
+					<service_info  name="test1" port="61000"  />
+					<service_info  name="test2" port="61001"  />
+					<service_info  name="test3" port="61002"  />
+					<service_info  name="test4" port="61003"  />
+					<service_info  name="test5" port="61004"  />
+					<service_info  name="test6" port="61005"  />
+					<service_info  name="test7" port="61006"  />
+					<service_info  name="test8" port="61007"  >
+					</service_info>
+			</proc_info>
+	</node_info>
+
+	<node_info  name="scu" ip="172.20.20.1">
+			<proc_info  name="sc"  debugport="60001">
+					<service_info  name="sc" port="60050"  />
+					<service_info  name="oc_comm" port="60051"  />
+					<service_info  name="sc_sequence" port="60052"  />
+					<service_info  name="das_ctrl" port="60053"  />
+					<service_info  name="ax_ctrl" port="60054"  />
+					<service_info  name="crdl_ctrl" port="60055"  />
+					<service_info  name="gen_ctrl" port="60056"  />
+					<service_info  name="coll_ctrl" port="60057"  />
+					<service_info  name="sc_hw_ctrl" port="60058"  />
+					<service_info  name="sc_panel_ctrl" port="60059"  />
+					<service_info  name="sc_tilt_ctrl" port="60060"  />
+					<service_info  name="sc_elev_ctrl" port="60061"  />
+					<service_info  name="sc_disp_ctrl" port="60062"  />
+					<service_info  name="sc_err_svc" port="60063"  />
+					<service_info  name="sc_pet_ctrl" port="60064"  />
+					<service_info  name="sc_audio_ctrl" port="60065"  />
+					<service_info  name="sc_ecg_ctrl" port="60066"  />
+			</proc_info>
+			<proc_info name="axial" debugport="60002">
+					<service_info  name="axial" port="60080" />
+					<service_info  name="axial_drive" port="60081" />
+			</proc_info>
+			<proc_info name="table" debugport="60003">
+					<service_info  name="cradle" port="60085" />
+			</proc_info>
+			<proc_info name="guif" debugport="60004">
+					<service_info  name="guif" port="60090" />
+			</proc_info>
+			<proc_info name="tl_el" debugport="60005">
+					<service_info  name="tl_ev" port="60095" />
+					<service_info  name="tl_mgr" port="60096" />
+					<service_info  name="ev_mgr" port="60097" />
+			</proc_info>
+			<proc_info name="scuBoardService" debugport="60006">
+					<service_info  name="scu_board_service" port="60105" />
+					<service_info  name="scu_bs_task_board" port="60106" />
+					<service_info  name="scu_bs_task_hardware" port="60107" />
+					<service_info  name="scu_bs_task_network" port="60108" />
+					<service_info  name="scu_bs_task_process" port="60109" />
+					<service_info  name="scu_board_test" port="60111" />
+			</proc_info>
+			<proc_info name="tools" >
+					<service_info  name="tools" port="60110" />
+			</proc_info>
+
+	</node_info>
+	<node_info name="rcu" ip="172.20.22.2" >
+			<proc_info name="das" debugport="60008">
+					<service_info  name="das" port="60200" />
+			</proc_info>
+			<proc_info name="gen" debugport="60009">
+					<service_info  name="genMgr" port="60300" />
+					<service_info  name="genStarter" port="60305" />
+					<service_info  name="genFila" port="60310" />
+			</proc_info>
+			<proc_info name="coll" debugport="60010">
+					<service_info  name="coll" port="60400" />
+			</proc_info>
+			<proc_info name="rcuBoardService" debugport="60011">
+					<service_info  name="rcu_board_service" port="60405" />
+					<service_info  name="rcu_bs_task_board" port="60406" />
+					<service_info  name="rcu_bs_task_hardware" port="60407" />
+					<service_info  name="rcu_bs_task_network" port="60408" />
+					<service_info  name="rcu_bs_task_process" port="60409" />
+					<service_info  name="rcu_board_test" port="60411" />
+			</proc_info>
+			<proc_info name="DetThermal" debugport="60012">
+					<service_info  name="DetThermal" port="60410" />
+			</proc_info>
+	</node_info>
+	<node_info name="ctbox" ip="172.20.20.3" >
+			<proc_info name="ctbox" debugport="60013">
+					<service_info  name="ctb_btn" port="60700" />
+			</proc_info>
+			<proc_info name="ctbdisp" debugport="60019">
+					<service_info  name="ctb_disp" port="60705" />
+			</proc_info>
+			<proc_info name="ctbaudio" debugport="60020">
+					<service_info  name="ctb_audio" port="60706" />
+			</proc_info>
+			<proc_info name="ctboxBoardService" debugport="60014">
+					<service_info  name="ctbox_board_service" port="60707" />
+					<service_info  name="ctbox_bs_task_board" port="60708" />
+					<service_info  name="ctbox_bs_task_hardware" port="60709" />
+					<service_info  name="ctbox_bs_task_network" port="60710" />
+					<service_info  name="ctbox_bs_task_process" port="60711" />
+					<service_info  name="ctbox_board_test" port="60712" />
+			</proc_info>
+	</node_info>
+	<node_info name="disp1" ip="172.20.20.4" >
+			<proc_info name="GantryPanel1" debugport="60015">
+					<service_info  name="g_panel1" port="60500" />
+			</proc_info>
+			<proc_info name="gdisp1" debugport="60021">
+					<service_info  name="g_disp1" port="60505" />
+			</proc_info>
+			<proc_info name="gaudio" debugport="60022">
+					<service_info  name="g_audio" port="60506" />
+			</proc_info>
+			<proc_info name="disp1BoardService" debugport="60016">
+					<service_info  name="disp1_board_service" port="60507" />
+					<service_info  name="disp1_bs_task_board" port="60508" />
+					<service_info  name="disp1_bs_task_hardware" port="60509" />
+					<service_info  name="disp1_bs_task_network" port="60510" />
+					<service_info  name="disp1_bs_task_process" port="60511" />
+					<service_info  name="disp1_board_test" port="60512" />
+			</proc_info>
+	</node_info>
+	<node_info name="disp2" ip="172.20.20.5" >
+			<proc_info name="GantryPanel2" debugport="60017">
+					<service_info  name="g_panel2" port="60600" />
+			</proc_info>
+			<proc_info name="gdisp2" debugport="60023">
+					<service_info  name="g_disp2" port="60605" />
+			</proc_info>
+			<proc_info name="disp2BoardService" debugport="60018">
+					<service_info  name="disp2_board_service" port="60606" />
+					<service_info  name="disp2_bs_task_board" port="60607" />
+					<service_info  name="disp2_bs_task_hardware" port="60608" />
+					<service_info  name="disp2_bs_task_network" port="60609" />
+					<service_info  name="disp2_bs_task_process" port="60610" />
+					<service_info  name="disp2_board_test" port="60611" />
+			</proc_info>
+	</node_info>
+</config>
