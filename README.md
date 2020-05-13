@@ -14,3 +14,5 @@ SVCIDLib.py services id list
 sysmap.xml 开发板-->进程-->services
 
 SysmapConfig.py 解析定义的services
+
+ECService.py ecservice类
