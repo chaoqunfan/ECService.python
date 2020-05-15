@@ -36,7 +36,7 @@ class ECService:
     # exit socket communication
     def exit(self):
         if self.sockHandler is not None:
-            self.sockHandler.exit()
+            self.sockHandler.stop()
         if self.procHandler is not None:
             self.procHandler.exit()
 
@@ -76,7 +76,7 @@ class ECService:
                         return evtCode
         except:
             info = sys.exc_info()
-            print info[0]+";"+info[1]
+            print str(info[0])+";"+str(info[1])
             return None
 
 if __name__ == "__main__":
@@ -86,4 +86,19 @@ if __name__ == "__main__":
 
     service = ECService(test1)
     service.registerEvent(1001, defaultHandler)
-    # ...
+    service1 = ECService(test2)
+    service1.registerEvent(0x70009, defaultHandler)
+
+    service1.startProc()
+    ev = EV_FPGA_CONF_REGISTER_DEV()
+    service.sendTo(test2, ev)
+    service1.stopProc()
+
+    ev = EV_FPGA_CONF_REGISTER_DEV()
+    service.sendTo(test2, ev)
+    print type(service1.waitEvent(0x70009, 10))
+
+    time.sleep(15)
+
+    service.exit()
+    service1.exit()

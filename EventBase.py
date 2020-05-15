@@ -92,5 +92,9 @@ class EV_SS_START(EventBase):
         EventBase.__init__(self, code)
 
 class EV_SS_INIT_DONE(EventBase):
-    def __init__(self , code=1003):
+    def __init__(self, code=1003):
+        EventBase.__init__(self, code)
+
+class EV_FPGA_CONF_REGISTER_DEV(EventBase):
+    def __init__(self, code=0x70009):
         EventBase.__init__(self, code)

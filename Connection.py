@@ -1,9 +1,8 @@
 #coding=utf-8
 
 import socket
-import EventBase
 from time import sleep
-# import EventLibs
+from EventBase import *
 
 connList = []
 
@@ -23,7 +22,7 @@ class Connection:
     def sendEv(self, ev):
         ev.header.length = sizeof(ev)
         ev.header.checksum = ev.sum()
-        print 'sending event %d to %d' % (ev.header.code, ev.header.sid)
+        #print 'sending event %d to %d' % (ev.header.code, ev.header.sid)
         if self.sock is not None:
             self.sock.send(struct2string(ev))
         else:

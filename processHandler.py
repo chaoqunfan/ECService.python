@@ -8,6 +8,7 @@ from time import sleep
 from threading import *
 
 def defaultHandler(evtData):
+    print "default handler entry"
     event = string2struct(evtData, EVENT_HEADER_TYPE)
     print("handle event %d" % event.code)
 

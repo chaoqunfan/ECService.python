@@ -6,7 +6,7 @@ import Queue
 import sys
 from Connection import *
 from EventBase import *
-
+from SysmapConfig import *
 from threading import *
 
 class socketHandler(Thread):
@@ -50,7 +50,7 @@ class socketHandler(Thread):
                 self.exit()
                 return
 
-            rs,ws,es = select.select(self.rlists, self.wlists, self.rlists, timeout=2)
+            rs,ws,es = select.select(self.rlists, self.wlists, self.rlists, 2)
             if not(rs or ws or es):
                 continue
             for s in rs:
@@ -92,7 +92,7 @@ class socketHandler(Thread):
                     # put evnt to queue to handle
                     else:
                         self.evtQueue.put(data)
-                        print 'queue size = ' + str(self.evtQueue.qsize())
+                        #print 'queue size = ' + str(self.evtQueue.qsize())
 
             for s in es:
                 print 'except ', s.getpeername()
@@ -113,7 +113,7 @@ class socketHandler(Thread):
         header = sock.recv(48)
         if header is not None:
             d = string2struct(header, EVENT_HEADER_TYPE)
-            print 'code = ' + str(d.code) + 'length = ' + str(d.length)
+            # print 'code = ' + str(d.code) + ' length = ' + str(d.length)
 
             if d.length + d.code + d.sid + d.rid != d.checksum:
                 print 'invalid event header, the checksum check failed'
